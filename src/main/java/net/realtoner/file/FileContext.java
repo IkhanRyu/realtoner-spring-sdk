@@ -3,6 +3,8 @@ package net.realtoner.file;
 import net.realtoner.utils.CheckUtils;
 import net.realtoner.utils.MatchUtils;
 
+import java.io.File;
+
 /**
  * contains information of file to be retrieved or stored.
  *
@@ -24,12 +26,25 @@ public class FileContext {
         path = path.trim();
         fileName = fileName.trim();
 
+        if(!path.endsWith("/"))
+            path += "/";
+
+        if(fileName.startsWith("/"))
+            fileName = fileName.substring(1);
+
         String _fileName = fileName;
 
         fileName = MatchUtils.removeExtensionFromFileName(fileName);
         String fileExtension = MatchUtils.extractExtensionFromFileName(_fileName);
 
         return new FileContext(originalFileName , path , fileName , fileExtension , size);
+    }
+
+    /**
+     *
+     * */
+    public static FileContext createFileContext(String path , String fileName , File file){
+        return createFileContext(path , fileName , file.getName() , file.length());
     }
 
     /**
@@ -66,7 +81,7 @@ public class FileContext {
 
     private long size;
 
-    public FileContext(String originalFileName , String filePath, String fileName , String fileExtension , long size){
+    protected FileContext(String originalFileName , String filePath, String fileName , String fileExtension , long size){
 
         this.originalFileName = originalFileName;
         this.path = filePath;
@@ -94,6 +109,9 @@ public class FileContext {
         this.path = path;
     }
 
+    /**
+     * @return the name of file without extension.
+     * */
     public String getFileName() {
         return fileName;
     }
@@ -134,7 +152,7 @@ public class FileContext {
      * full name is contains fileName and file extension. If current file context does not have extension
      * just return fileName.
      *
-     * @return the full name of file
+     * @return the name of file with extension.
      * */
     public String getFullFileName(){
         return fileName + (CheckUtils.isEmptyString(fileExtension) ? "" : "."  + fileExtension);
