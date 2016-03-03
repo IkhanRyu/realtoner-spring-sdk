@@ -2,6 +2,7 @@ package net.realtoner.http;
 
 
 import com.squareup.okhttp.*;
+import net.realtoner.utils.CheckUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -73,7 +74,23 @@ public class HttpRequest {
         HttpResponse httpResponse = new HttpResponse();
 
         httpResponse.setStatusCode(response.code());
-        httpResponse.setContent(response.body().string());
+
+        ResponseBody responseBody = response.body();
+
+        // fill content
+        switch(response.body().contentType().type()){
+
+            case "image" :
+
+                httpResponse.setInputStream(responseBody.byteStream());
+                break;
+
+            default:
+            case "text":
+
+                httpResponse.setStringContent(responseBody.string());
+                break;
+        }
 
         Headers headers = response.headers();
 
@@ -85,7 +102,7 @@ public class HttpRequest {
     }
 
     /*
-    * Noraml getters and setters
+    * Normal getters and setters
     * */
     public String getUrl() {
         return url;

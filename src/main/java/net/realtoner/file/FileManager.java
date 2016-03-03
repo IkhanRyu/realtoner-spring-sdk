@@ -4,6 +4,7 @@ import net.realtoner.file.exception.DuplicateFileException;
 import net.realtoner.file.exception.SchemaInitializingException;
 import net.realtoner.file.schema.FileManagerSchema;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,6 +88,11 @@ public interface FileManager{
      * */
     InputStream retrieveFile(FileContext fileContext) throws IOException;
 
+    /**
+     *
+     * @param path
+     * */
+    void createFolder(String path) throws IOException;
 
     /**
      *
@@ -125,4 +131,19 @@ public interface FileManager{
      * @param fileContext information of current file
      * */
     void deleteFile(FileContext fileContext) throws IOException;
+
+    /**
+     *
+     * @param fileContext
+     * @return
+     * */
+    File toFile(FileContext fileContext);
+
+    /**
+     *
+     * @param path
+     * @param fileName
+     * @return
+     * */
+    File toFile(String path , String fileName);
 }

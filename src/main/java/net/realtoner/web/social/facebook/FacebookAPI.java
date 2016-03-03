@@ -116,7 +116,7 @@ public class FacebookAPI {
         try {
 
             HttpResponse response = request.process();
-            content = response.getContent();
+            content = response.getStringContent();
 
         } catch (IOException e) {
 
@@ -166,7 +166,7 @@ public class FacebookAPI {
 
         try {
             HttpResponse response = request.process();
-            content = response.getContent();
+            content = response.getStringContent();
 
         } catch (IOException e) {
 

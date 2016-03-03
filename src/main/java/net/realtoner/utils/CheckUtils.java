@@ -48,6 +48,15 @@ public class CheckUtils {
         return !isEmptyString(email) && MatchUtils.matches(email, EMAIL_REG_EXP);
     }
 
+    private static String URL_REG_EXP = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+    /**
+     *
+     * */
+    public static boolean isValidURL(String url){
+        return !isEmptyString(url) && MatchUtils.matches(url, URL_REG_EXP);
+    }
+
     public static boolean isEqualWithConvertingToMD5(String unConverted, String converted) {
 
         MessageDigest md;

@@ -19,7 +19,7 @@ public class ImageUtils {
      * @param inputFile
      * @return
      * */
-    private static BufferedImage getBufferedImage(File inputFile) throws IOException{
+    public static BufferedImage getBufferedImage(File inputFile) throws IOException{
         return ImageIO.read(inputFile);
     }
 
@@ -90,13 +90,13 @@ public class ImageUtils {
 
         BufferedImage bufferedImage = getBufferedImage(inputFile);
 
-        double ratio = (double)bufferedImage.getWidth() / width;
+        double ratio =  (double)width / bufferedImage.getWidth();
 
         int height = (int)(bufferedImage.getHeight() * ratio);
 
         String fileType = getFileType(inputFile);
 
-        resize(bufferedImage , width , height , fileType , outputFile);
+        resize(bufferedImage, width, height, fileType, outputFile);
     }
 
     /**
@@ -106,7 +106,7 @@ public class ImageUtils {
      * @param width
      * */
     public static void resizeToSameRatioWithFixedWidth(String inputPath , String outputPath, int width) throws IOException{
-        resizeToSameRatioWithFixedWidth(new File(inputPath) , new File(outputPath) ,width);
+        resizeToSameRatioWithFixedWidth(new File(inputPath), new File(outputPath), width);
     }
 
     /**
@@ -125,7 +125,7 @@ public class ImageUtils {
 
         String fileType = getFileType(inputFile);
 
-        resize(bufferedImage , width , height , fileType , outputFile);
+        resize(bufferedImage, width, height, fileType, outputFile);
     }
 
     /**
@@ -135,6 +135,40 @@ public class ImageUtils {
      * @param height
      * */
     public static void resizeToSameRatioWithFixedHeight(String inputPath , String outputPath, int height) throws IOException{
-        resizeToSameRatioWithFixedHeight(new File(inputPath) , new File(outputPath) , height);
+        resizeToSameRatioWithFixedHeight(new File(inputPath), new File(outputPath), height);
+    }
+
+    public static void cropCenterOfImage(File input , File output , int width , int height) throws IOException{
+
+        BufferedImage bufferedImage = getBufferedImage(input);
+
+        int x = 0,y = 0;
+
+        if(bufferedImage.getWidth() > width){
+            x = (bufferedImage.getWidth() - width) / 2;
+        }else{
+            width = bufferedImage.getWidth();
+        }
+
+        if(bufferedImage.getHeight() > height){
+            y = (bufferedImage.getHeight() - height) / 2;
+        }else{
+            height = bufferedImage.getHeight();
+        }
+
+        BufferedImage subImage = bufferedImage.getSubimage(x , y , width , height);
+
+        ImageIO.write(subImage, getFileType(input), new FileOutputStream(output));
+    }
+
+    public static void cropSquareCenterOfImage(File input , File output , int length) throws IOException{
+
+        BufferedImage bufferedImage = getBufferedImage(input);
+
+        int x = 0,y = 0;
+        int minLength = bufferedImage.getWidth() > bufferedImage.getHeight() ?
+                bufferedImage.getHeight() : bufferedImage.getHeight();
+
+
     }
 }
